@@ -20,8 +20,10 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"time"
 
 	"github.com/spf13/cobra"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/kops/cmd/kops/util"
 	"k8s.io/kops/pkg/apis/kops"
 	"k8s.io/kops/pkg/commands/commandutils"
@@ -114,11 +116,17 @@ func NewCmdReconcileCluster(f *util.Factory, out io.Writer) *cobra.Command {
 // "update" is probably now smart enough to automatically not update the control plane if it is already at the desired version,
 // but we do it explicitly here to be clearer / safer.
 func RunReconcileCluster(ctx context.Context, f *util.Factory, out io.Writer, c *CoreUpdateClusterOptions) error {
-	if !c.Yes {
-		return fmt.Errorf("reconcile is only supported with --yes")
-	}
 	if c.Target == cloudup.TargetTerraform {
 		return fmt.Errorf("reconcile is not supported with terraform")
+	}
+
+	if !c.Yes {
+		// A reconcile without --yes is the same as a dry run
+		opt := *c
+		if _, err := RunCoreUpdateCluster(ctx, f, out, &opt); err != nil {
+			return err
+		}
+		return nil
 	}
 
 	fmt.Fprintf(out, "Updating control plane configuration\n")
@@ -131,6 +139,30 @@ func RunReconcileCluster(ctx context.Context, f *util.Factory, out io.Writer, c 
 		opt.Prune = false // Do not prune until after the last rolling update
 		if _, err := RunCoreUpdateCluster(ctx, f, out, &opt); err != nil {
 			return err
+		}
+	}
+
+	// Particularly for a new cluster, we need to wait for the control plane to be answering requests
+	// before we can do a rolling update.
+	fmt.Fprintf(out, "Waiting for the kubernetes API to be served\n")
+	{
+		opt := &ValidateClusterOptions{}
+		opt.InitDefaults()
+		opt.ClusterName = c.ClusterName
+		opt.wait = 10 * time.Minute
+
+		// filter the instance group to only include the control plane
+		opt.filterInstanceGroups = func(ig *kops.InstanceGroup) bool {
+			return ig.Spec.Role == kops.InstanceGroupRoleAPIServer || ig.Spec.Role == kops.InstanceGroupRoleControlPlane
+		}
+
+		// Ignore all pods, we just want to check the control plane is responding
+		opt.filterPodsForValidation = func(pod *v1.Pod) bool {
+			return false
+		}
+
+		if _, err := RunValidateCluster(ctx, f, out, opt); err != nil {
+			return fmt.Errorf("waiting for kubernetes API to be served: %w", err)
 		}
 	}
 
