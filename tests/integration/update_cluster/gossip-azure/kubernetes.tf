@@ -224,7 +224,7 @@ resource "azurerm_managed_disk" "etcd-1-etcd-events-gossip-k8s-local" {
   tags = {
     "KubernetesCluster"                      = "test-cluster.k8s"
     "k8s.io_etcd_events"                     = "etcd-1/etcd-1"
-    "k8s.io_role_control_plane"              = "1"
+    "k8s.io_role_control-plane"              = "1"
     "k8s.io_role_master"                     = "1"
     "kubernetes.io_cluster_gossip.k8s.local" = "owned"
   }
@@ -241,7 +241,7 @@ resource "azurerm_managed_disk" "etcd-1-etcd-main-gossip-k8s-local" {
   tags = {
     "KubernetesCluster"                      = "test-cluster.k8s"
     "k8s.io_etcd_main"                       = "etcd-1/etcd-1"
-    "k8s.io_role_control_plane"              = "1"
+    "k8s.io_role_control-plane"              = "1"
     "k8s.io_role_master"                     = "1"
     "kubernetes.io_cluster_gossip.k8s.local" = "owned"
   }
