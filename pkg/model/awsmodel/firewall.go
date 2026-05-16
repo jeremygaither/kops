@@ -324,7 +324,7 @@ func (b *AWSModelContext) GetSecurityGroups(role kops.InstanceGroupRole) ([]Secu
 			"port=" + strconv.Itoa(wellknownports.EtcdMainClientPort),   // etcd main
 			"port=" + strconv.Itoa(wellknownports.EtcdEventsClientPort), // etcd events
 			"port=4789", // VXLAN
-			"port=179",  // Calico
+			"port=" + strconv.Itoa(wellknownports.BGP), // Calico
 			"port=8443", // k8s api secondary listener
 			"port=3:4",  // ICMP
 			"port=-1",   // ICMPv6

@@ -20,6 +20,9 @@ const (
 	// KubeAPIServer is the port where kube-apiserver listens.
 	KubeAPIServer = 443
 
+	// BGP is the port used by the BGP routing protocol (Calico node-to-node mesh).
+	BGP = 179
+
 	// EtcdMetricsPort is used to serve etcd metrics
 	EtcdMetricsPort = 2382
 
