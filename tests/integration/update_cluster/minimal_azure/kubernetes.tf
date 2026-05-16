@@ -224,7 +224,7 @@ resource "azurerm_managed_disk" "a-etcd-events-minimal-azure-example-com" {
   tags = {
     "KubernetesCluster"                               = "test-cluster.k8s"
     "k8s.io_etcd_events"                              = "a/a"
-    "k8s.io_role_control_plane"                       = "1"
+    "k8s.io_role_control-plane"                       = "1"
     "k8s.io_role_master"                              = "1"
     "kubernetes.io_cluster_minimal-azure.example.com" = "owned"
   }
@@ -241,7 +241,7 @@ resource "azurerm_managed_disk" "a-etcd-main-minimal-azure-example-com" {
   tags = {
     "KubernetesCluster"                               = "test-cluster.k8s"
     "k8s.io_etcd_main"                                = "a/a"
-    "k8s.io_role_control_plane"                       = "1"
+    "k8s.io_role_control-plane"                       = "1"
     "k8s.io_role_master"                              = "1"
     "kubernetes.io_cluster_minimal-azure.example.com" = "owned"
   }

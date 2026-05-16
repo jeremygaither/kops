@@ -37,7 +37,7 @@ const (
 	// Use dash (_) as a splitter. Other CSPs use slash (/), but slash is not
 	// allowed as a tag key in Azure.
 	TagNameRolePrefix        = "k8s.io_role_"
-	TagRoleControlPlane      = "control_plane"
+	TagRoleControlPlane      = "control-plane"
 	TagRoleMaster            = "master"
 	TagNameEtcdClusterPrefix = "k8s.io_etcd_"
 )

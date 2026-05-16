@@ -548,7 +548,7 @@ func (b *EtcdManagerBuilder) buildPod(etcdCluster kops.EtcdClusterSpec, instance
 				// allowed as a tag key in Azure.
 				fmt.Sprintf("kubernetes.io_cluster_%s=owned", b.Cluster.Name),
 				azure.TagNameEtcdClusterPrefix + etcdCluster.Name,
-				azure.TagNameRolePrefix + "control_plane=1",
+				azure.TagNameRolePrefix + azure.TagRoleControlPlane + "=1",
 			}
 			config.VolumeNameTag = azure.TagNameEtcdClusterPrefix + etcdCluster.Name
 
