@@ -483,20 +483,6 @@ resource "azurerm_role_assignment" "control-plane-eastus-1-masters-gossip-k8s-lo
   skip_service_principal_aad_check = true
 }
 
-resource "azurerm_role_assignment" "nodes-eastus-1-gossip-k8s-local-blob" {
-  principal_id                     = azurerm_linux_virtual_machine_scale_set.nodes-eastus-1-gossip-k8s-local.identity[0].principal_id
-  role_definition_id               = "/subscriptions/sub-321/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/teststorage/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe"
-  scope                            = "/subscriptions/sub-321/resourceGroups/resource-group-name/providers/Microsoft.Storage/storageAccounts/teststorage"
-  skip_service_principal_aad_check = true
-}
-
-resource "azurerm_role_assignment" "nodes-eastus-1-gossip-k8s-local-owner" {
-  principal_id                     = azurerm_linux_virtual_machine_scale_set.nodes-eastus-1-gossip-k8s-local.identity[0].principal_id
-  role_definition_id               = "/subscriptions/sub-123/resourceGroups/gossip.k8s.local/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
-  scope                            = "/subscriptions/sub-123/resourceGroups/gossip.k8s.local"
-  skip_service_principal_aad_check = true
-}
-
 resource "azurerm_route_table" "gossip-k8s-local" {
   location            = "eastus"
   name                = "gossip.k8s.local"

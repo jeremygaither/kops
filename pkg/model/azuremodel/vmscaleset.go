@@ -62,7 +62,7 @@ func (b *VMScaleSetModelBuilder) Build(c *fi.CloudupModelBuilderContext) error {
 		}
 		c.AddTask(vmss)
 
-		if ig.IsControlPlane() || b.Cluster.UsesLegacyGossip() {
+		if ig.IsControlPlane() {
 			// Create tasks for assigning built-in roles to VM Scale Sets.
 			// See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
 			resourceGroupID := fmt.Sprintf("/subscriptions/%s/resourceGroups/%s",
