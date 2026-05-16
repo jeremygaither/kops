@@ -119,8 +119,6 @@
         "ec2:DetachNetworkInterface",
         "ec2:ModifyNetworkInterfaceAttribute",
         "ec2:UnassignPrivateIpAddresses",
-        "iam:GetServerCertificate",
-        "iam:ListServerCertificates",
         "kms:CreateGrant",
         "kms:Decrypt",
         "kms:DescribeKey",

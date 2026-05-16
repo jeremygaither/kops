@@ -7,8 +7,6 @@
         "ec2:DescribeInstances",
         "ec2:DescribeRegions",
         "ec2:ModifyInstanceAttribute",
-        "iam:GetServerCertificate",
-        "iam:ListServerCertificates",
         "kms:GenerateRandom"
       ],
       "Effect": "Allow",

@@ -24,8 +24,6 @@
         "ec2:DetachNetworkInterface",
         "ec2:ModifyNetworkInterfaceAttribute",
         "ec2:UnassignPrivateIpAddresses",
-        "iam:GetServerCertificate",
-        "iam:ListServerCertificates",
         "kms:GenerateRandom"
       ],
       "Effect": "Allow",

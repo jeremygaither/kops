@@ -70,8 +70,6 @@
         "ec2:DescribeInstances",
         "ec2:DescribeRegions",
         "ec2:DescribeVolumes",
-        "iam:GetServerCertificate",
-        "iam:ListServerCertificates",
         "kms:CreateGrant",
         "kms:Decrypt",
         "kms:DescribeKey",
