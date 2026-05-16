@@ -391,11 +391,7 @@ func buildEnvironmentVariables(cluster *kops.Cluster, ig *kops.InstanceGroup) (m
 			os.Setenv(openstackconfig.EnvKeyOpenstackTLSInsecureSkipVerify, "true")
 		}
 
-		// credentials needed always in control-plane and when using gossip also in nodes
-		passEnvs := false
-		if ig.IsControlPlane() || cluster.UsesLegacyGossip() {
-			passEnvs = true
-		}
+		passEnvs := ig.IsControlPlane()
 		// Pass in required credentials when using user-defined swift endpoint
 		if os.Getenv("OS_AUTH_URL") != "" && passEnvs {
 			for _, envVar := range osEnvs {
@@ -413,7 +409,7 @@ func buildEnvironmentVariables(cluster *kops.Cluster, ig *kops.InstanceGroup) (m
 		}
 	}
 
-	if cluster.GetCloudProvider() == kops.CloudProviderHetzner && (ig.IsControlPlane() || cluster.UsesLegacyGossip()) {
+	if cluster.GetCloudProvider() == kops.CloudProviderHetzner && ig.IsControlPlane() {
 		hcloudToken := os.Getenv("HCLOUD_TOKEN")
 		if hcloudToken != "" {
 			env["HCLOUD_TOKEN"] = hcloudToken
@@ -439,7 +435,7 @@ func buildEnvironmentVariables(cluster *kops.Cluster, ig *kops.InstanceGroup) (m
 		}
 	}
 
-	if cluster.GetCloudProvider() == kops.CloudProviderScaleway && (ig.IsControlPlane() || cluster.UsesLegacyGossip()) {
+	if cluster.GetCloudProvider() == kops.CloudProviderScaleway && ig.IsControlPlane() {
 		profile, err := scaleway.CreateValidScalewayProfile()
 		if err != nil {
 			return nil, err
