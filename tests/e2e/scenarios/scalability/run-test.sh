@@ -119,6 +119,11 @@ create_args+=("--set spec.kubeAPIServer.anonymousAuth=true")
 create_args+=("--set spec.kubeProxy.proxyMode=${KUBE_PROXY_MODE:-iptables}")
 # this is required for prometheus to scrape kube-proxy metrics endpoint
 create_args+=("--set spec.kubeProxy.metricsBindAddress=0.0.0.0:10249")
+# bump coredns memory on large clusters
+if [[ "${KUBE_NODE_COUNT:-100}" -ge 5000 ]]; then
+  create_args+=("--set spec.kubeDNS.memoryRequest=340Mi")
+  create_args+=("--set spec.kubeDNS.memoryLimit=340Mi")
+fi
 create_args+=("--node-count=${KUBE_NODE_COUNT:-100}")
 create_args+=("--control-plane-count=${CONTROL_PLANE_COUNT:-1}")
 create_args+=("--control-plane-size=${CONTROL_PLANE_SIZE:-c5.2xlarge}")
