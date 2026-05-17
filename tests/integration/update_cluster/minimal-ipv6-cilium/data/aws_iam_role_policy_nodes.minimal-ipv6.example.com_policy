@@ -5,8 +5,7 @@
         "ec2:AssignIpv6Addresses",
         "ec2:DescribeInstanceTypes",
         "ec2:DescribeInstances",
-        "ec2:DescribeRegions",
-        "kms:GenerateRandom"
+        "ec2:DescribeRegions"
       ],
       "Effect": "Allow",
       "Resource": "*"

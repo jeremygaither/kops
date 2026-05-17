@@ -33,13 +33,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/ec2/imds"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	ec2types "github.com/aws/aws-sdk-go-v2/service/ec2/types"
-	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"go.uber.org/multierr"
 	"k8s.io/klog/v2"
 	"k8s.io/kops/nodeup/pkg/model"
@@ -106,9 +104,6 @@ func (c *NodeUpCommand) Run(out io.Writer) error {
 
 	region, err := getRegion(ctx, &bootConfig)
 	if err != nil {
-		return err
-	}
-	if err = seedRNG(ctx, &bootConfig, region); err != nil {
 		return err
 	}
 
@@ -631,40 +626,6 @@ func getRegion(ctx context.Context, bootConfig *nodeup.BootConfig) (string, erro
 	}
 
 	return "", nil
-}
-
-// seedRNG adds entropy to the random number generator.
-func seedRNG(ctx context.Context, bootConfig *nodeup.BootConfig, region string) error {
-	switch bootConfig.CloudProvider {
-	case api.CloudProviderAWS:
-		cfg, err := awsconfig.LoadDefaultConfig(context.TODO(),
-			awsconfig.WithRegion(region),
-		)
-		if err != nil {
-			return err
-		}
-
-		random, err := kms.NewFromConfig(cfg).GenerateRandom(ctx, &kms.GenerateRandomInput{
-			NumberOfBytes: aws.Int32(64),
-		})
-		if err != nil {
-			return fmt.Errorf("generating random seed: %v", err)
-		}
-
-		f, err := os.OpenFile("/dev/urandom", os.O_WRONLY, 0)
-		if err != nil {
-			return fmt.Errorf("opening /dev/urandom: %v", err)
-		}
-		_, err = f.Write(random.Plaintext)
-		if err1 := f.Close(); err1 != nil && err == nil {
-			err = err1
-		}
-		if err != nil {
-			return fmt.Errorf("writing /dev/urandom: %v", err)
-		}
-	}
-
-	return nil
 }
 
 // getNodeConfigFromServers queries kops-controllers for our node's configuration.

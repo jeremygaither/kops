@@ -6,8 +6,7 @@
         "ec2:DescribeInstanceTypes",
         "ec2:DescribeInstances",
         "ec2:DescribeRegions",
-        "ec2:ModifyInstanceAttribute",
-        "kms:GenerateRandom"
+        "ec2:ModifyInstanceAttribute"
       ],
       "Effect": "Allow",
       "Resource": "*"

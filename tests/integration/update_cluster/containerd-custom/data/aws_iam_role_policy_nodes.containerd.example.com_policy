@@ -8,8 +8,7 @@
         "ecr:BatchImportUpstreamImage",
         "ecr:CreateRepository",
         "ecr:ReplicateImage",
-        "ecr:TagResource",
-        "kms:GenerateRandom"
+        "ecr:TagResource"
       ],
       "Effect": "Allow",
       "Resource": "*"

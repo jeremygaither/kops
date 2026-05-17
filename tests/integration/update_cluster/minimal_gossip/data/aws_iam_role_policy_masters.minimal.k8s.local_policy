@@ -169,7 +169,6 @@
         "kms:DescribeKey",
         "kms:Encrypt",
         "kms:GenerateDataKey*",
-        "kms:GenerateRandom",
         "kms:ReEncrypt*",
         "sqs:DeleteMessage",
         "sqs:ReceiveMessage"
