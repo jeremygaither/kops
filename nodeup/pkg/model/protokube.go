@@ -66,7 +66,8 @@ func (t *ProtokubeBuilder) Build(c *fi.NodeupModelBuilderContext) error {
 		})
 	}
 
-	{
+	// The channels binary is only invoked on control-plane nodes.
+	if t.IsMaster {
 		name, res, err := t.Assets.FindMatch(regexp.MustCompile("channels$"))
 		if err != nil {
 			return err

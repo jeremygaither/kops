@@ -313,21 +313,6 @@ func (n *nodeUpConfigBuilder) BuildConfig(ig *kops.InstanceGroup, wellKnownAddre
 				}
 			}
 		}
-
-		if isMaster || usesLegacyGossip {
-			config.Channels = n.channels
-			for _, arch := range architectures.GetSupported() {
-				for _, a := range n.protokubeAsset[arch] {
-					config.Assets[arch] = append(config.Assets[arch], a.CompactString())
-				}
-			}
-
-			for _, arch := range architectures.GetSupported() {
-				for _, a := range n.channelsAsset[arch] {
-					config.Assets[arch] = append(config.Assets[arch], a.CompactString())
-				}
-			}
-		}
 	}
 
 	if hasAPIServer {
@@ -390,6 +375,27 @@ func (n *nodeUpConfigBuilder) BuildConfig(ig *kops.InstanceGroup, wellKnownAddre
 		switch cluster.GetCloudProvider() {
 		case kops.CloudProviderHetzner, kops.CloudProviderScaleway, kops.CloudProviderDO, kops.CloudProviderMetal:
 			bootConfig.APIServerIPs = controlPlaneIPs
+		}
+	}
+
+	if role != kops.InstanceGroupRoleBastion {
+		// protokube runs on control-plane nodes, and on legacy-gossip workers that don't bootstrap via kops-controller (mirrors nodeup's ProtokubeBuilder.Build).
+		if isMaster || (usesLegacyGossip && len(bootConfig.APIServerIPs) == 0) {
+			config.Channels = n.channels
+			for _, arch := range architectures.GetSupported() {
+				for _, a := range n.protokubeAsset[arch] {
+					config.Assets[arch] = append(config.Assets[arch], a.CompactString())
+				}
+			}
+		}
+
+		// The channels binary is only ever run by protokube on control-plane nodes.
+		if isMaster {
+			for _, arch := range architectures.GetSupported() {
+				for _, a := range n.channelsAsset[arch] {
+					config.Assets[arch] = append(config.Assets[arch], a.CompactString())
+				}
+			}
 		}
 	}
 
