@@ -491,6 +491,9 @@ func (c *VFSContext) buildGCSPath(p string) (*GSPath, error) {
 	}
 
 	bucket := strings.TrimSuffix(u.Host, "/")
+	if bucket == "" {
+		return nil, fmt.Errorf("invalid google cloud storage path: %q", p)
+	}
 
 	gcsPath := NewGSPath(c, bucket, u.Path)
 	return gcsPath, nil
