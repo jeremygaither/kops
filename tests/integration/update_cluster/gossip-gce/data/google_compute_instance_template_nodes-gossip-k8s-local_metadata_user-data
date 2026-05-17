@@ -148,7 +148,7 @@ ConfigServer:
   - https://kops-controller.internal.gossip.k8s.local:3988/
 InstanceGroupName: nodes
 InstanceGroupRole: Node
-NodeupConfigHash: cMB9N+44MKID0GSmNn6vUqrSVyBTMn7Fw+2g4qHAgf4=
+NodeupConfigHash: fON9buaGy3r7LYOK35mu43Cm7km0asaiN1iKLtTYGPY=
 
 __EOF_KUBE_ENV
 
