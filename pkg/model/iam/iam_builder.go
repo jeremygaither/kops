@@ -823,7 +823,6 @@ func addKindnetSrcDstCheckPermissions(p *Policy) {
 }
 
 func (b *PolicyBuilder) addNodeupPermissions(p *Policy, enableHookSupport bool) {
-	addCertIAMPolicies(p)
 	addKMSGenerateRandomPolicies(p)
 	addASLifecyclePolicies(p, enableHookSupport)
 	p.unconditionalAction.Insert(
@@ -1217,14 +1216,6 @@ func addASLifecyclePolicies(p *Policy, enableHookSupport bool) {
 			"autoscaling:DescribeLifecycleHooks",
 		)
 	}
-}
-
-func addCertIAMPolicies(p *Policy) {
-	// TODO: Make optional only if using IAM SSL Certs on ELBs
-	p.unconditionalAction.Insert(
-		"iam:ListServerCertificates",
-		"iam:GetServerCertificate",
-	)
 }
 
 func addCiliumEniPermissions(p *Policy) {
