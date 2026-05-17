@@ -109,20 +109,7 @@ func (b *ServiceAccountsBuilder) addInstanceGroupServiceAccountPermissions(c *fi
 		})
 
 	case kops.InstanceGroupRoleNode:
-		// Known permissions:
-		//  * compute.zones.list (to find out region; we could replace this with string manipulation)
-		//  * compute.instances.list (for discovery; we don't need in the case of a load balancer or DNS)
-
-		// We use the GCE viewer role
-
-		c.AddTask(&gcetasks.ProjectIAMBinding{
-			Name:      s("serviceaccount-nodes"),
-			Lifecycle: b.Lifecycle,
-
-			Project:              s(b.ProjectID),
-			MemberServiceAccount: serviceAccount,
-			Role:                 s("roles/compute.viewer"),
-		})
+		// Worker nodes need no project-level role.
 	}
 	return nil
 }

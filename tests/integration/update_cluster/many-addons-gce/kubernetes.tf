@@ -583,12 +583,6 @@ resource "google_project_iam_binding" "serviceaccount-control-plane" {
   role    = "roles/container.serviceAgent"
 }
 
-resource "google_project_iam_binding" "serviceaccount-nodes" {
-  members = [format("serviceAccount:%s", google_service_account.node.email)]
-  project = "testproject"
-  role    = "roles/compute.viewer"
-}
-
 resource "google_service_account" "control-plane" {
   account_id   = "control-plane-minimal-e-rabo9p"
   description  = "kubernetes control-plane instances"
