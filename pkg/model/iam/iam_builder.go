@@ -823,7 +823,6 @@ func addKindnetSrcDstCheckPermissions(p *Policy) {
 }
 
 func (b *PolicyBuilder) addNodeupPermissions(p *Policy, enableHookSupport bool) {
-	addKMSGenerateRandomPolicies(p)
 	addASLifecyclePolicies(p, enableHookSupport)
 	p.unconditionalAction.Insert(
 		"ec2:DescribeRegions",
@@ -1197,13 +1196,6 @@ func addKMSIAMPolicies(p *Policy) {
 		"kms:Encrypt",
 		"kms:GenerateDataKey*",
 		"kms:ReEncrypt*",
-	)
-}
-
-func addKMSGenerateRandomPolicies(p *Policy) {
-	// For nodeup to seed the instance's random number generator.
-	p.unconditionalAction.Insert(
-		"kms:GenerateRandom",
 	)
 }
 
